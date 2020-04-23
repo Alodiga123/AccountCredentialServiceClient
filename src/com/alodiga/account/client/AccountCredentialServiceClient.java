@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.alodiga.account.client;
 
 import com.alodiga.account.credential.response.StatusAccountResponse;
@@ -42,12 +37,10 @@ import org.xml.sax.SAXException;
  */
 public class AccountCredentialServiceClient {
 
-    public static void main(String[] args) throws Exception {
-        // TODO code application logic here
-        AccountCredentialServiceClient accountCredentialServiceClient = new AccountCredentialServiceClient();
+    private static final int CONNECTION_TIMEOUT = 5000;
 
-//        ChangeStatusCardResponse response = cardCredentialServiceClient.changeStatusCard("usuarioWStest", "America/Caracas", "zzTQTPW8sjZ1rXOFtcBmIM7+exK1iSVr4sWp1Avyjh6HqBr1Jlr7pWktVpSQAxziAaLbCmZ3P0GuJgMSBFhrOf/KiQq1YEO2MLhXrhRBtEqgPvt/5TE2++K+Dr//OcjFCArBr+MmpadvpIh4qT4zhau87w5IsFDaZkpzVikB7uM=", "03");
-//        System.out.println(response.getCodigoRespuesta());
+    public static void main(String[] args) throws Exception {
+        AccountCredentialServiceClient accountCredentialServiceClient = new AccountCredentialServiceClient();
         StatusAccountResponse accountResponse = accountCredentialServiceClient.statusAccount("PilotoWS", "America/Caracas", "543932601");
         System.out.println(accountResponse.getDescripcionEstado());
     }
@@ -64,6 +57,7 @@ public class AccountCredentialServiceClient {
             URL url = new URL(wsEndPoint);
             URLConnection connection = url.openConnection();
             HttpURLConnection httpConn = (HttpURLConnection) connection;
+            httpConn.setConnectTimeout(CONNECTION_TIMEOUT);
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
             StringBuilder builder = new StringBuilder("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:syn=\"http://ws.apache.org/ns/synapse\">");
             builder.append("<soapenv:Header/>");
@@ -173,6 +167,7 @@ public class AccountCredentialServiceClient {
             final String TEST_URL = Constants.URL_PROD_WS;
             URL url = new URL(TEST_URL);
             HttpsURLConnection httpsCon = (HttpsURLConnection) url.openConnection();
+            httpsCon.setConnectTimeout(CONNECTION_TIMEOUT);
             httpsCon.setHostnameVerifier(new HostnameVerifier() {
                 public boolean verify(String hostname, SSLSession session) {
                     return true;
